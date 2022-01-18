@@ -55,6 +55,9 @@
         },
         "hana": {
             "deploy-format": "hdbtable"
+        },
+        "uaa": {
+            "kind": "xsuaa"
         }
     }
 }

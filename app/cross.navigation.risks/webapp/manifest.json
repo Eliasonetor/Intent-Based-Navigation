@@ -7,8 +7,8 @@
         "applicationVersion": {
             "version": "1.0.0"
         },
-        "title": "{{appTitle}}",
-        "description": "{{appDescription}}",
+        "title": "Risks App",
+        "description": "Risks",
         "dataSources": {
             "mainService": {
                 "uri": "risks/",
@@ -32,7 +32,7 @@
                         "additionalParameters": "allowed"
                     },
                     "semanticObject": "Risks",
-                    "action": "Manage",
+                    "action": "manage",
                     "title": "{{flpTitle}}",
                     "subTitle": "{{flpSubtitle}}",
                     "icon": ""
