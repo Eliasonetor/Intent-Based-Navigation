@@ -66,9 +66,23 @@ modules:
       - crossnavigationrisks.zip
       name: crossnavigationrisks
       target-path: resources/
+    - artifacts:
+      - crossnavigationmitigations.zip
+      name: crossnavigationmitigations
+      target-path: resources/
 - name: crossnavigationrisks
   type: html5
   path: app/cross.navigation.risks
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+- name: crossnavigationmitigations
+  type: html5
+  path: app/cross.navigation.mitigations
   build-parameters:
     build-result: dist
     builder: custom
@@ -97,21 +111,13 @@ resources:
             ProxyType: Internet
             Type: HTTP
             URL: https://ui5.sap.com
-          - Authentication: NoAuthentication
-            Description: CAP sample service
-            HTML5.DynamicDestination: true
-            HTML5.ForwardAuthToken: true
-            Name: cap_dest
-            ProxyType: Internet
-            Type: HTTP
-            URL: ~{srv-api/srv-url}
           existing_destinations_policy: update
       version: 1.0.0
     service: destination
     service-name: cross-navigation-destination-service
     service-plan: lite
   requires:
-    - name: srv-api
+  - name: srv-api
 - name: cross-navigation_html_repo_host
   type: org.cloudfoundry.managed-service
   parameters:
