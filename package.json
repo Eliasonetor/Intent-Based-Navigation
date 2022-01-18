@@ -1,0 +1,60 @@
+{
+    "name": "cross-navigation",
+    "version": "1.0.0",
+    "description": "A simple CAP project.",
+    "repository": "<Add your repository here>",
+    "license": "UNLICENSED",
+    "private": true,
+    "dependencies": {
+        "@sap/cds": "^5",
+        "express": "^4",
+        "hdb": "^0.18.3"
+    },
+    "devDependencies": {
+        "@sap/hdi-deploy": "^4.0.5",
+        "@sap/ux-specification": "^1.96.0",
+        "@sap/ux-ui5-tooling": "^1.4.4",
+        "sqlite3": "^5.0.2"
+    },
+    "scripts": {
+        "hana": "cds deploy --to hana:shop --auto-undeploy",
+        "start": "cds run",
+        "build": "cds build",
+        "undeploy": "cf undeploy cross-navigation --delete-services --delete-service-keys"
+    },
+    "eslintConfig": {
+        "extends": "eslint:recommended",
+        "env": {
+            "es2020": true,
+            "node": true,
+            "jest": true,
+            "mocha": true
+        },
+        "globals": {
+            "SELECT": true,
+            "INSERT": true,
+            "UPDATE": true,
+            "DELETE": true,
+            "CREATE": true,
+            "DROP": true,
+            "CDL": true,
+            "CQL": true,
+            "CXL": true,
+            "cds": true
+        },
+        "rules": {
+            "no-console": "off",
+            "require-atomic-updates": "off"
+        }
+    },
+    "cds": {
+        "requires": {
+            "db": {
+                "kind": "hana"
+            }
+        },
+        "hana": {
+            "deploy-format": "hdbtable"
+        }
+    }
+}

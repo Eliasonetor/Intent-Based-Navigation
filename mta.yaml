@@ -1,0 +1,136 @@
+_schema-version: "3.1"
+ID: cross-navigation
+description: A simple CAP project.
+version: 1.0.0
+modules:
+- name: cross-navigation-srv
+  type: nodejs
+  path: gen/srv
+  requires:
+  - name: cross-navigation-destination-service
+  - name: cross-navigation-db
+  provides:
+  - name: srv-api
+    properties:
+      srv-url: ${default-url}
+  parameters:
+    buildpack: nodejs_buildpack
+- name: cross-navigation-db-deployer
+  type: hdb
+  path: gen/db
+  requires:
+  - name: cross-navigation-db
+  parameters:
+    buildpack: nodejs_buildpack
+- name: cross-navigation-destination-content
+  type: com.sap.application.content
+  requires:
+  - name: cross-navigation-destination-service
+    parameters:
+      content-target: true
+  - name: cross-navigation_html_repo_host
+    parameters:
+      service-key:
+        name: cross-navigation_html_repo_host-key
+  - name: uaa_cross-navigation
+    parameters:
+      service-key:
+        name: uaa_cross-navigation-key
+  parameters:
+    content:
+      instance:
+        destinations:
+        - Name: crossnavapprouter_cross_navigation_html_repo_host
+          ServiceInstanceName: cross-navigation-html5-app-host-service
+          ServiceKeyName: cross-navigation_html_repo_host-key
+          sap.cloud.service: crossnavapprouter
+        - Authentication: OAuth2UserTokenExchange
+          Name: crossnavapprouter_uaa_cross_navigation
+          ServiceInstanceName: cross-navigation-xsuaa-service
+          ServiceKeyName: uaa_cross-navigation-key
+          sap.cloud.service: crossnavapprouter
+        existing_destinations_policy: ignore
+  build-parameters:
+    no-source: true
+- name: cross-navigation-app-content
+  type: com.sap.application.content
+  path: .
+  requires:
+  - name: cross-navigation_html_repo_host
+    parameters:
+      content-target: true
+  build-parameters:
+    build-result: resources
+    requires:
+    - artifacts:
+      - crossnavigationrisks.zip
+      name: crossnavigationrisks
+      target-path: resources/
+- name: crossnavigationrisks
+  type: html5
+  path: app/cross.navigation.risks
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+resources:
+- name: cross-navigation-db
+  type: com.sap.xs.hdi-container
+  parameters:
+    service: hana
+    service-plan: hdi-shared
+  properties:
+    hdi-service-name: ${service-name}
+- name: cross-navigation-destination-service
+  type: org.cloudfoundry.managed-service
+  parameters:
+    config:
+      HTML5Runtime_enabled: true
+      init_data:
+        instance:
+          destinations:
+          - Authentication: NoAuthentication
+            Name: ui5
+            ProxyType: Internet
+            Type: HTTP
+            URL: https://ui5.sap.com
+          - Authentication: NoAuthentication
+            Description: CAP sample service
+            HTML5.DynamicDestination: true
+            HTML5.ForwardAuthToken: true
+            Name: cap_dest
+            ProxyType: Internet
+            Type: HTTP
+            URL: ~{srv-api/srv-url}
+          existing_destinations_policy: update
+      version: 1.0.0
+    service: destination
+    service-name: cross-navigation-destination-service
+    service-plan: lite
+  requires:
+    - name: srv-api
+- name: cross-navigation_html_repo_host
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: html5-apps-repo
+    service-name: cross-navigation-html5-app-host-service
+    service-plan: app-host
+- name: uaa_cross-navigation
+  type: org.cloudfoundry.managed-service
+  parameters:
+    path: ./xs-security.json
+    service: xsuaa
+    service-name: cross-navigation-xsuaa-service
+    service-plan: application
+parameters:
+  deploy_mode: html5-repo
+  enable-parallel-deployments: true
+build-parameters:
+  before-all:
+  - builder: custom
+    commands:
+    - npm install --production
+    - npx -p @sap/cds-dk cds build --production
