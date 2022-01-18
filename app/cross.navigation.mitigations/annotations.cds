@@ -1,51 +1,44 @@
 using MitigationsService as service from '../../srv/navigation-service';
 
+annotate service.Mitigations with {
+    description @title : 'Description';
+    owner       @title : 'Owner';
+    timeline    @title : 'Timeline';
+    risks       @title : 'Risks';
+    mit_number  @title : 'Mitigation Number'
+}
+
 annotate service.Mitigations with @(
-    UI.LineItem : [
-        {
-            $Type : 'UI.DataField',
-            Label : 'description',
-            Value : description,
-        },
-        {
-            $Type : 'UI.DataField',
-            Label : 'owner',
-            Value : owner,
-        },
-        {
-            $Type : 'UI.DataField',
-            Label : 'timeline',
-            Value : timeline,
-        },
-    ]
-);
-annotate service.Mitigations with @(
-    UI.FieldGroup #GeneratedGroup1 : {
-        $Type : 'UI.FieldGroupType',
-        Data : [
-            {
+	UI: {
+		HeaderInfo: {
+			TypeName: 'Mitigation',
+			TypeNamePlural: 'Mitigations',
+			Title          : {
                 $Type : 'UI.DataField',
-                Label : 'description',
-                Value : description,
+                Value : owner
             },
-            {
-                $Type : 'UI.DataField',
-                Label : 'owner',
-                Value : owner,
-            },
-            {
-                $Type : 'UI.DataField',
-                Label : 'timeline',
-                Value : timeline,
-            },
-        ],
-    },
-    UI.Facets : [
-        {
-            $Type : 'UI.ReferenceFacet',
-            ID : 'GeneratedFacet1',
-            Label : 'General Information',
-            Target : '@UI.FieldGroup#GeneratedGroup1',
-        },
-    ]
+			Description : {
+				$Type: 'UI.DataField',
+				Value: description
+			}
+		},
+		SelectionFields: [timeline],
+		LineItem: [
+            {Value: mit_number},
+			{Value: owner},
+            {Value: timeline},
+            {Value: description}
+		],
+		Facets: [
+			{$Type: 'UI.ReferenceFacet', Label: 'Main', Target: '@UI.FieldGroup#Main'}
+		],
+		FieldGroup#Main: {
+			Data: [
+                {Value: mit_number},
+                {Value: owner},
+                {Value: timeline},
+                {Value: description}
+			]
+		}
+	},
 );

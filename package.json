@@ -17,7 +17,7 @@
         "sqlite3": "^5.0.2"
     },
     "scripts": {
-        "hana": "cds deploy --to hana:shop --auto-undeploy",
+        "hana": "cds deploy --to hana:kitchen-app-db --auto-undeploy",
         "start": "cds run",
         "build": "cds build",
         "undeploy": "cf undeploy cross-navigation --delete-services --delete-service-keys"

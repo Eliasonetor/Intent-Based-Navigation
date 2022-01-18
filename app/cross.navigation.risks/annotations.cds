@@ -1,71 +1,58 @@
 using RisksService as service from '../../srv/navigation-service';
 
+annotate service.Risks with {
+    title       @title: 'Title';
+	prio        @title: 'Priority';
+	descr       @title: 'Description';
+	miti        @title: 'Mitigation';
+	impact      @title: 'Impact';
+    classification @title : 'Classification'
+}
+
 annotate service.Risks with @(
-    UI.LineItem : [
-        {
-            $Type : 'UI.DataField',
-            Label : 'title',
-            Value : title,
-        },
-        {
-            $Type : 'UI.DataField',
-            Label : 'prio',
-            Value : prio,
-        },
-        {
-            $Type : 'UI.DataField',
-            Label : 'descr',
-            Value : descr,
-        },
-        {
-            $Type : 'UI.DataField',
-            Label : 'impact',
-            Value : impact,
-        },
-        {
-            $Type : 'UI.DataField',
-            Label : 'criticality',
-            Value : criticality,
-        },
-    ]
+    	UI: {
+		HeaderInfo: {
+			TypeName: 'Risk',
+			TypeNamePlural: 'Risks',
+			Title          : {
+                $Type : 'UI.DataField',
+                Value : title
+            },
+			Description : {
+				$Type: 'UI.DataField',
+				Value: descr
+			}
+		},
+		SelectionFields: [prio],
+		LineItem: [
+			{Value: classification},
+            {Value: title},
+			{
+				Value: prio,
+				Criticality: criticality
+			},
+			{
+				Value: impact,
+				Criticality: criticality
+			}
+		],
+		Facets: [
+			{$Type: 'UI.ReferenceFacet', Label: 'Information', Target: '@UI.FieldGroup#Main'}
+		],
+		FieldGroup#Main: {
+			Data: [
+			    {Value: classification},
+                {Value: title},
+				{
+					Value: prio,
+					Criticality: criticality
+				},
+				{
+					Value: impact,
+					Criticality: criticality
+				}
+			]
+		}
+	},
 );
-annotate service.Risks with @(
-    UI.FieldGroup #GeneratedGroup1 : {
-        $Type : 'UI.FieldGroupType',
-        Data : [
-            {
-                $Type : 'UI.DataField',
-                Label : 'title',
-                Value : title,
-            },
-            {
-                $Type : 'UI.DataField',
-                Label : 'prio',
-                Value : prio,
-            },
-            {
-                $Type : 'UI.DataField',
-                Label : 'descr',
-                Value : descr,
-            },
-            {
-                $Type : 'UI.DataField',
-                Label : 'impact',
-                Value : impact,
-            },
-            {
-                $Type : 'UI.DataField',
-                Label : 'criticality',
-                Value : criticality,
-            },
-        ],
-    },
-    UI.Facets : [
-        {
-            $Type : 'UI.ReferenceFacet',
-            ID : 'GeneratedFacet1',
-            Label : 'General Information',
-            Target : '@UI.FieldGroup#GeneratedGroup1',
-        },
-    ]
-);
+
