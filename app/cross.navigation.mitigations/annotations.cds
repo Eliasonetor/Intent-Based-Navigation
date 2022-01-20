@@ -1,11 +1,15 @@
 using MitigationsService as service from '../../srv/navigation-service';
 
 annotate service.Mitigations with {
+    ID          @title : 'ID';
+    ID          @UI.ExcludeFromNavigationContext : true;
     description @title : 'Description';
     owner       @title : 'Owner';
     timeline    @title : 'Timeline';
     risks       @title : 'Risks';
-    mit_number  @title : 'Mitigation Number'
+    mit_number  @title : 'Mitigation Number';
+    classification @title : 'classification';
+    classification @Common.SemanticObject : 'Risks';
 }
 
 annotate service.Mitigations with @(
@@ -22,9 +26,10 @@ annotate service.Mitigations with @(
 				Value: description
 			}
 		},
-		SelectionFields: [timeline],
+        SelectionFields: [classification],
 		LineItem: [
-            {Value: mit_number},
+            {Value: ID},
+            {Value: classification},
 			{Value: owner},
             {Value: timeline},
             {Value: description}
@@ -34,7 +39,7 @@ annotate service.Mitigations with @(
 		],
 		FieldGroup#Main: {
 			Data: [
-                {Value: mit_number},
+                {Value: classification},
                 {Value: owner},
                 {Value: timeline},
                 {Value: description}

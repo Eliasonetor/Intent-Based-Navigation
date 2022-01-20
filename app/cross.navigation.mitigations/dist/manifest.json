@@ -28,14 +28,16 @@
             "inbounds": {
                 "cross-navigation-mitigations-inbound": {
                     "signature": {
-                        "parameters": {},
+                        "parameters": {
+                            "classification": {}
+                        },
                         "additionalParameters": "allowed"
                     },
                     "semanticObject": "Mitigations",
                     "action": "manage",
                     "title": "{{flpTitle}}",
                     "subTitle": "{{flpSubtitle}}",
-                    "icon": ""
+                    "icon": "sap-icon://product"
                 }
             }
         }

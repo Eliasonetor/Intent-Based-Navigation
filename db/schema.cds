@@ -12,7 +12,7 @@ using { managed } from '@sap/cds/common';
   }
   entity Mitigations : managed {
     key ID       : UUID  @(Core.Computed : true);
-    mit_number: String(7);
+    classification: String(7);
     description  : String;
     owner        : String;
     timeline     : String;
