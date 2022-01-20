@@ -1,17 +1,17 @@
 {
     "_version": "1.32.0",
     "sap.app": {
-        "id": "cross.navigation.risks",
+        "id": "cross.navigation.mitigations",
         "type": "application",
         "i18n": "i18n/i18n.properties",
         "applicationVersion": {
             "version": "1.0.0"
         },
-        "title": "Risks App",
-        "description": "Risks",
+        "title": "{{appTitle}}",
+        "description": "{{appDescription}}",
         "dataSources": {
             "mainService": {
-                "uri": "risks/",
+                "uri": "mitigations/",
                 "type": "OData",
                 "settings": {
                     "odataVersion": "4.0"
@@ -26,16 +26,18 @@
         },
         "crossNavigation": {
             "inbounds": {
-                "cross-navigation-risks-inbound": {
+                "cross-navigation-mitigations-inbound": {
                     "signature": {
-                        "parameters": {},
+                        "parameters": {
+                            "classification": {}
+                        },
                         "additionalParameters": "allowed"
                     },
-                    "semanticObject": "Risks",
+                    "semanticObject": "Mitigations",
                     "action": "manage",
                     "title": "{{flpTitle}}",
                     "subTitle": "{{flpSubtitle}}",
-                    "icon": "sap-icon://functional-location"
+                    "icon": "sap-icon://product"
                 }
             }
         }
@@ -92,42 +94,42 @@
             "routes": [
                 {
                     "pattern": ":?query:",
-                    "name": "RisksList",
-                    "target": "RisksList"
+                    "name": "MitigationsList",
+                    "target": "MitigationsList"
                 },
                 {
-                    "pattern": "Risks({key}):?query:",
-                    "name": "RisksObjectPage",
-                    "target": "RisksObjectPage"
+                    "pattern": "Mitigations({key}):?query:",
+                    "name": "MitigationsObjectPage",
+                    "target": "MitigationsObjectPage"
                 }
             ],
             "targets": {
-                "RisksList": {
+                "MitigationsList": {
                     "type": "Component",
-                    "id": "RisksList",
+                    "id": "MitigationsList",
                     "name": "sap.fe.templates.ListReport",
                     "options": {
                         "settings": {
-                            "entitySet": "Risks",
+                            "entitySet": "Mitigations",
                             "variantManagement": "Page",
                             "navigation": {
-                                "Risks": {
+                                "Mitigations": {
                                     "detail": {
-                                        "route": "RisksObjectPage"
+                                        "route": "MitigationsObjectPage"
                                     }
                                 }
                             }
                         }
                     }
                 },
-                "RisksObjectPage": {
+                "MitigationsObjectPage": {
                     "type": "Component",
-                    "id": "RisksObjectPage",
+                    "id": "MitigationsObjectPage",
                     "name": "sap.fe.templates.ObjectPage",
                     "options": {
                         "settings": {
                             "editableHeaderContent": false,
-                            "entitySet": "Risks"
+                            "entitySet": "Mitigations"
                         }
                     }
                 }
